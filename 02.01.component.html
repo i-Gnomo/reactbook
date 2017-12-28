@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>component</title>
+</head>
+<body>
+	<div id="app">
+	</div>
+	<div id="haha">
+	</div>
+	<div id="haha2">
+	</div>
+
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript">
+		//自定义组件
+		var Component = React.createClass({
+				render: function(){
+					return React.DOM.div(null,"hahahaha my name is "+ this.props.name+". my age is "+ this.props.age);
+				}
+			});
+
+		// ReactDOM.render(
+		// 	React.createElement(Component), //createElement创建组件“实例”
+		// 	document.getElementById("haha")
+		// );
+		//同上
+		ReactDOM.render(
+			React.createElement("div",null,"hahahaha2"),
+			document.getElementById("haha2")
+		);
+
+		//工厂方法创建多个实例
+		var ComponentFactory = React.createFactory(Component);
+		ReactDOM.render(
+			ComponentFactory(),
+			document.getElementById("app")
+		);
+
+		//组件属性
+		ReactDOM.render(
+			React.createElement(Component,{
+				name: "Bob",
+				age: 19
+			}),
+			document.getElementById("app")
+		);
+
+		//使用propTypes
+		var myComponent = React.createClass({
+			//使用propTypes声明组件需要接收的属性列表及对应类型
+			propTypes: {
+				name: React.PropTypes.string.isRequired,
+				address: React.PropTypes.string.isRequired
+			},
+			//提供默认属性值
+			getDefaultProps: function(){
+				return {
+					address: 'default address'
+				}
+			},
+			render: function(){
+				return React.DOM.div(null, "my new name is "+ this.props.name +'. '+this.props.address);
+			}
+		});
+		ReactDOM.render(
+			React.createElement(myComponent,{
+				name: "Lily",
+				// address: "999"
+				// name: 99876
+			}),
+			document.getElementById("app")
+		);
+		//propTypes可用属性列表
+		console.log(Object.keys(React.PropTypes).join('\n'));
+		
+		
+
+	</script>
+</body>

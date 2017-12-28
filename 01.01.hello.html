@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Hello World</title>
+</head>
+<body>
+	<div id="app">
+	</div>
+	<div id="box">
+	</div>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script><!--react dom插件库-->
+	<script type="text/javascript">
+		ReactDOM.render(
+			React.DOM.h1(
+				{id: "my-heading"},
+				React.DOM.span(
+					null,
+					React.DOM.em(null,"Hello"),
+					"~"
+				),
+				" World!",
+			),
+			document.getElementById("app")
+		);
+		ReactDOM.render(
+			React.DOM.a(
+				{
+					id: "my-link",
+					title: "box",
+					className: "linkclass",	//class
+					htmlFor: "9999",		//for some element
+					style: {				//style css
+						color: "#ff0000",
+						fontSize: "16px",
+						backgroundColor: "black"
+					}
+				},
+				"I`m your ",
+				React.DOM.strong(null,"box"),
+				"!"
+			),
+			document.getElementById("box")
+		);
+		//React.DOM预定义的HTML元素集合
+		console.log(Object.keys(React.DOM).join('\n'));
+
+		//ReactDOM.render(reactWhat,domWhere);
+		//React.DOM.element(attributes,children);
+
+		//React DevTools浏览器扩展
+	</script>
+</body>
