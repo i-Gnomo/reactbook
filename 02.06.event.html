@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>event</title>
+</head>
+<body>
+	<div id="textDiv">
+	</div>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript">
+		//state 组件渲染自身时用到的，当state发生改变React自动重建用户界面
+		var TextAreaCounter = React.createClass({
+			propTypes:{
+				text: React.PropTypes.string.isRequired,
+				defaultValue: React.PropTypes.string
+			},
+			getDefaultProps: function(){
+				return {
+					text: '',
+					defaultValue: ''
+				}
+			},
+			getInitialState: function(){
+				return {
+					text: this.props.defaultValue
+				}
+			},
+			_textChange: function(ev){ //事件监听器
+				this.setState({
+					text: ev.target.value, //react基于性能 使用了事件委托
+				});
+			},
+			render: function(){
+				return React.DOM.div(null,
+					React.DOM.textarea({
+						value: this.state.text,
+						onChange: this._textChange, //onChange驼峰命名 用户输入时触发
+					}),
+					React.DOM.h3(null, this.state.text.length)
+				);
+			}
+		});
+
+		//从外部通过变量访问组件
+		var myTextAreaCounter = ReactDOM.render(
+			React.createElement(TextAreaCounter,{
+				defaultValue: "my name is Bob"
+			}),
+			document.getElementById("textDiv")
+		);
+
+		//区分 this.props 和 this.state
+		//this.props 像传递给类构造函数的参数
+		//this.state 则包含私有属性
+
+		myTextAreaCounter.setState({text: "Hello outside World!"});
+
+		var reactAppNode = ReactDOM.findDOMNode(myTextAreaCounter);
+		console.log(reactAppNode);
+		console.log(reactAppNode.innerHTML); //'<textarea>my name is Bob</textarea><h3>20</h3>'
+
+		console.log(reactAppNode.parentNode === document.getElementById("textDiv")); //true
+		console.log(myTextAreaCounter.props);
+		console.log(myTextAreaCounter.state);
+
+	</script>
+</body>

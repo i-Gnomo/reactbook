@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>state</title>
+</head>
+<body>
+	<div id="app">
+	</div>
+	<div id="app2">
+	</div>
+	<div id="textDiv">
+	</div>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript">
+		//自定义组件
+		var Component = React.createClass({
+				propTypes: {
+					name: React.PropTypes.string.isRequired,
+					age: React.PropTypes.number.isRequired
+				},
+				getDefaultProps: function(){
+					return {
+						name: 'zsx',
+						age: 18
+					}
+				},
+				render: function(){
+					// return React.DOM.div({className:"items"},"hahahaha my name is "+ this.props.name+". my age is "+ this.props.age);
+					return React.createElement("div",{className:"items"},"hahahaha my name is "+ this.props.name+". my age is "+ this.props.age);
+				}
+			});
+
+		ReactDOM.render(
+			React.createElement(Component,{
+				name: 'Lily Wang',
+				age: 10000
+			}),
+			document.getElementById("app")
+		);
+
+		//工厂方法创建多个实例
+		var ComponentFactory = React.createFactory(Component);
+		ReactDOM.render(
+			ComponentFactory(),
+			document.getElementById("app2")
+		);
+
+		//state 组件渲染自身时用到的，当state发生改变React自动重建用户界面
+		var TextAreaCounter = React.createClass({
+			propTypes:{
+				text: React.PropTypes.string.isRequired
+			},
+			getDefaultProps: function(){
+				return {
+					text: ''
+				}
+			},
+			getInitialState: function(){
+				return {
+					text: this.props.text
+				}
+			},
+			_textChange: function(ev){ //事件监听器
+				this.setState({
+					text: ev.target.value,
+				});
+			},
+			render: function(){
+				return React.DOM.div(null,
+					React.DOM.textarea({
+						// defaultValue: this.props.text,
+						value: this.state.text,
+						onChange: this._textChange, //onChange驼峰命名 用户输入时触发
+					}),
+					React.DOM.h3(null, this.state.text.length)
+				);
+			}
+		});
+		ReactDOM.render(
+			React.createElement(TextAreaCounter),
+			document.getElementById("textDiv")
+		);
+
+	</script>
+</body>
