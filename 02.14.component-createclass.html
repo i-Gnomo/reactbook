@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>使用子组件</title>
+</head>
+<body>
+	<div id="app">
+	</div>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript">
+		var logMixin = {
+			//生命周期示例 -输出日志记录
+			_log: function(methodName, args){
+				console.log(this.name+'::'+methodName, args);
+			},
+			componentWillUpdate: function(){
+				this._log('componentWillUpdate', arguments);
+			},
+			componentDidUpdate: function(){
+				this._log('componentDidUpdate', arguments);
+			},
+			componentWillMount: function(){
+				this._log('componentWillMount', arguments);
+			},
+			componentDidMount: function(){
+				this._log('componentDidMount', arguments);
+			},
+			componentWillUnmount: function(){
+				this._log('componentWillUnmount', arguments);
+			},
+		};
+
+		//定义计数器子组件
+		var Counter = React.createClass({
+			name: 'Counter',
+			mixins: [logMixin],
+			propTypes: {
+				count: React.PropTypes.number.isRequired
+			},
+			render: function(){
+				return React.DOM.span(null, this.props.count);
+			}
+		});
+
+		var TextAreaCounter = React.createClass({
+			name: 'TextAreaCounter',
+			mixins: [logMixin],
+			propTypes:{
+				text: React.PropTypes.string.isRequired,
+				defaultText: React.PropTypes.string
+			},
+			getDefaultProps: function(){
+				return {
+					text: '',
+					defaultText: ''
+				}
+			},
+			getInitialState: function(){
+				return {
+					text: this.props.defaultText
+				}
+			},
+			_textChange: function(ev){ //事件监听器
+				this.setState({
+					text: ev.target.value, //react基于性能 使用了事件委托
+				});
+			},
+			render: function(){
+				var counter = null;
+				if(this.state.text.length>0){
+					counter = React.DOM.h3(null,
+						React.createElement(Counter,{
+							count: this.state.text.length
+						})
+					);
+				}
+				return React.DOM.div(null,
+					React.DOM.textarea({
+						value: this.state.text,
+						onChange: this._textChange, //onChange驼峰命名 用户输入时触发
+					}),
+					counter
+				);
+			}
+		});
+
+		//从外部通过变量访问组件
+		ReactDOM.render(
+			React.createElement(TextAreaCounter,{
+				defaultText: "my name is Bob"
+			}),
+			document.getElementById("app")
+		);
+
+
+	</script>
+</body>
+
+
+
+
+
+
+
+

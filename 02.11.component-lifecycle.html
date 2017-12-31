@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>event</title>
+	<title>组件生命周期</title>
 </head>
 <body>
 	<div id="textDiv">
@@ -31,6 +31,25 @@
 				this.setState({
 					text: ev.target.value, //react基于性能 使用了事件委托
 				});
+			},
+			//生命周期示例 -输出日志记录
+			_log: function(methodName, args){
+				console.log(methodName, args);
+			},
+			componentWillUpdate: function(){
+				this._log('componentWillUpdate', arguments);
+			},
+			componentDidUpdate: function(){
+				this._log('componentDidUpdate', arguments);
+			},
+			componentWillMount: function(){
+				this._log('componentWillMount', arguments);
+			},
+			componentDidMount: function(){
+				this._log('componentDidMount', arguments);
+			},
+			componentWillUnmount: function(){
+				this._log('componentWillUnmount', arguments);
 			},
 			render: function(){
 				return React.DOM.div(null,
@@ -79,6 +98,8 @@
 			document.getElementById("textDiv")
 		);
 		console.log(myTextAreaCounter.props);
+
+
 	</script>
 </body>
 
