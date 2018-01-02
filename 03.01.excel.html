@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>table component</title>
+</head>
+<body>
+	<div id="table">
+	</div>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript">
+		var headers = ["Book","Author(s)","Original language","First published","Approximate sales"];
+
+		var data = [
+			["The Tale of Peter Rabbit","Beatrix Potter","English","1902","45 million"],
+			["The Odyssey","Homer","Ancient Greek","8th Century BC","45 million"],
+			["Jonathan Livingston Seagull","Richard Bach","English","1970","44 million"],
+			["The Very Hungry Caterpillar","Eric Carle","English","1969","43 million"],
+			["A Message to Garcia","Elbert Hubbard","English","1899","40 million"],
+			["Sofies verden (Sophie's World)","Jostein Gaarder","Norwegian","1991","40 million"]
+		];
+		var logMixin = {
+			//生命周期示例 -输出日志记录
+			_log: function(methodName, args){
+				console.log(methodName, args);
+			},
+			componentWillUpdate: function(){
+				this._log('componentWillUpdate', arguments);
+			},
+			componentDidUpdate: function(){
+				this._log('componentDidUpdate', arguments);
+			},
+			componentWillMount: function(){
+				this._log('componentWillMount', arguments);
+			},
+			componentDidMount: function(){
+				this._log('componentDidMount', arguments);
+			},
+			componentWillUnmount: function(){
+				this._log('componentWillUnmount', arguments);
+			},
+		};
+
+		var MyTable = React.createClass({
+			displayName: 'MyTable',
+			render: function(){
+				return (
+					React.DOM.table(null,
+						React.DOM.thead(null,
+							React.DOM.tr(null,
+								this.props.headers.map(function(title,index){
+									return React.DOM.td({key: index},title);
+								})
+							)
+						)
+					)
+				);
+			}
+		});
+
+		ReactDOM.render(
+			React.createElement(MyTable,{
+				headers: headers,
+				initialData: data
+			}),
+			document.getElementById("table")
+		)
+
+	</script>
+</body>
+
+
+
+
+
+
+
+
