@@ -6,13 +6,15 @@
 	<style>
 	table{
 		min-width: 800px;
-		border: 1px #cccccc solid;
+		border-left: 1px #eeeeee solid;
 		border-spacing: 0;
 	}
-	table thead tr,table thead th{
+	table thead tr th{
 		font-weight: bold;
 		text-align: left;
-		background-color: #eeeeee;
+		background-color: #454545;
+    	color: #ffffff;
+    	cursor: pointer;
 	}
 	table tr,table tr td{
 		height: 30px;
@@ -24,6 +26,23 @@
 		border: 1px #eeeeee solid;
 		border-radius: 3px;
 	}
+	table thead tr th{
+		border-style: solid;
+		border-color: gray;
+		border-width: 0 1px 1px 0;
+	}
+	table tr td{
+		border-style: solid;
+		border-color: #eeeeee;
+		border-width: 0 1px 1px 0;
+	}
+	table tr td input{
+		padding: 0;
+	    margin: 3px 0;
+	    height: 24px;
+	    line-height: 24px;
+	    border: 1px #cccccc solid;
+	}
 	</style>
 </head>
 <body>
@@ -32,7 +51,7 @@
 	<script type="text/javascript" src="react/build/react.js"></script>
 	<script type="text/javascript" src="react/build/react-dom.js"></script>
 	<script type="text/javascript">
-		var headers = ["Book","Author(s)","Language","Published","Sales"];
+		var headers = [["Book","300"],["Author(s)","150"],["Language","150"],["Published","150"],["Sales","150"]];
 
 		var data = [
 			["The Tale of Peter Rabbit","Beatrix Potter","English","1902","45 million"],
@@ -68,7 +87,9 @@
 			displayName: 'MyTable',
 			propTypes: {
 				headers: React.PropTypes.arrayOf(
-					React.PropTypes.string
+					React.PropTypes.arrayOf(
+						React.PropTypes.string
+					)
 				),
 				initialData: React.PropTypes.arrayOf(
 					React.PropTypes.arrayOf(
@@ -136,19 +157,36 @@
 					return null;
 				}
 				return (
-					React.DOM.tr(null,
-						this.props.headers.map(function(_ignore,_k){
+					React.DOM.tr({onChange: this._search},
+						this.props.headers.map(function(title,_k){
 							return (
 								React.DOM.td({key: _k},
 									React.DOM.input({
 										type: 'text',
-										data_k: _k
+										style: {
+											width: (parseInt(title[1])-8)+'px'
+										},
+										'data-k': _k
 									})
 								)
 							);
 						})
 					)
 				);
+			},
+			_search: function(ev){
+				var _v = ev.target.value.toLowerCase();
+				if(!_v){
+					this.setState({data: this._preSearchData});
+					return;
+				}
+				var rIndex = ev.target.dataset.k;
+				var searchData = this._preSearchData.filter(function(row){
+					return row[rIndex].toString().toLowerCase().indexOf(_v) >-1;
+				});
+				this.setState({
+					data: searchData
+				});
 			},
 			_renderToolbar: function(){
 				return React.DOM.button({
@@ -162,10 +200,16 @@
 						React.DOM.thead({onClick: this._sort},
 							React.DOM.tr(null,
 								this.props.headers.map(function(title,index){
+									var _title = title[0];
 									if(this.state.sortby === index){
-										title += this.state.descending? '\u2191':'\u2193';
+										_title += this.state.descending? '\u2191':'\u2193';
 									}
-									return React.DOM.th({key: index},title);
+									return React.DOM.th({
+										key: index,
+										style:{
+											width: title[1]+'px'
+										}
+									},_title);
 								},this)
 							)
 						),
