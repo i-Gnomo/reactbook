@@ -66,21 +66,26 @@
 			_log: function(methodName, args){
 				console.log(methodName, args);
 			},
-			componentWillUpdate: function(){
-				this._log('componentWillUpdate', arguments);
-			},
-			componentDidUpdate: function(){
-				this._log('componentDidUpdate', arguments);
-			},
-			componentWillMount: function(){
-				this._log('componentWillMount', arguments);
-			},
+			// componentWillUpdate: function(){
+			// 	this._log('componentWillUpdate', arguments);
+			// },
+			// componentDidUpdate: function(){
+			// 	this._log('componentDidUpdate', arguments);
+			// },
+			// componentWillMount: function(){
+			// 	this._log('componentWillMount', arguments);
+			// },
 			componentDidMount: function(){
 				this._log('componentDidMount', arguments);
+				document.onkeydown = function(e){
+					if(e.altKey && e.shiftKey && e.keyCode === 82){
+						this._replay();
+					}
+				}.bind(this);
 			},
-			componentWillUnmount: function(){
-				this._log('componentWillUnmount', arguments);
-			},
+			// componentWillUnmount: function(){
+			// 	this._log('componentWillUnmount', arguments);
+			// },
 		};
 
 		var MyTable = React.createClass({
@@ -106,6 +111,7 @@
 					search: false
 				}
 			},
+			mixins: [logMixin],
 			_sort: function(ev){
 				var colum = ev.target.cellIndex;
 				var data = this.state.data.slice();
@@ -113,14 +119,14 @@
 					data.sort(function(a,b){
 						return descending? (a[colum]<b[colum]? 1:-1):(a[colum]>b[colum]? 1:-1);
 					})
-					this.setState({
+					this._logSetState({
 						data: data,
 						sortby: colum,
 						descending: descending
 					})
 			},
 			_showEditor: function(ev){
-				this.setState({
+				this._logSetState({
 					edit: {
 						row: parseInt(ev.target.dataset.row, 10),
 						cell: ev.target.cellIndex
@@ -132,7 +138,7 @@
 				var input = ev.target.firstChild;
 				var data = this.state.data.slice();
 					data[this.state.edit.row][this.state.edit.cell] = input.value;
-				this.setState({
+				this._logSetState({
 					edit: null,
 					data: data
 				})
@@ -140,14 +146,14 @@
 			_preSearchData: null,
 			_toggleSearch: function(ev){
 				if(this.state.search){
-					this.setState({
+					this._logSetState({
 						data: this._preSearchData,
 						search: false
 					})
 					this._preSearchData = null;
 				}else{
 					this._preSearchData = this.state.data;
-					this.setState({
+					this._logSetState({
 						search: true
 					})
 				}
@@ -177,22 +183,46 @@
 			_search: function(ev){
 				var _v = ev.target.value.toLowerCase();
 				if(!_v){
-					this.setState({data: this._preSearchData});
+					this._logSetState({data: this._preSearchData});
 					return;
 				}
 				var rIndex = ev.target.dataset.k;
-				var searchData = this._preSearchData.filter(function(row){
+				var searchData = this.state.data.filter(function(row){
 					return row[rIndex].toString().toLowerCase().indexOf(_v) >-1;
 				});
-				this.setState({
+				this._logSetState({
 					data: searchData
 				});
 			},
 			_renderToolbar: function(){
+				var _s_tit = '搜索';
+				if(this.state.search === true){
+					_s_tit = '关闭搜索';
+				}
 				return React.DOM.button({
 					onClick: this._toggleSearch,
 					className: 'tb-tool'
-				},'搜索');
+				},_s_tit);
+			},
+			_logstate: [], //记录组件历史状态
+			_logSetState: function(newState){
+				this._logstate.push(JSON.parse(JSON.stringify(
+					this._logstate.length === 0? this.state: newState
+				)));
+				this.setState(newState);
+			},
+			_replay: function(){
+				if(this._logstate.length === 0){
+					return;
+				}
+				var idx = -1;
+				var interVal = setInterval(function(){
+					idx++;
+					if(idx === this._logstate.length-1){
+						clearInterval(interVal);
+					}
+					this.setState(this._logstate[idx]);
+				}.bind(this),1000);
 			},
 			_renderTable: function(){
 				return (
@@ -232,7 +262,6 @@
 														defaultValue: content
 													})
 												);
-												console.log(edit);
 											}
 											return React.DOM.td({
 												key: _k,
@@ -256,7 +285,7 @@
 				);
 			}
 		});
-		ReactDOM.render(
+		var myTableRender = ReactDOM.render(
 			React.createElement(MyTable,{
 				headers: headers,
 				initialData: data
