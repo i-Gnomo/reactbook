@@ -20,11 +20,21 @@
 		height: 30px;
 		text-indent: 3px;
 	}
-	button.tb-tool{
-		margin: 20px 20px 20px 0;
-		padding: 5px 15px;
-		border: 1px #eeeeee solid;
-		border-radius: 3px;
+	.tb-tool button,
+	.tb-tool a{
+	    margin: 20px 20px 20px 0;
+	    padding: 0;
+	    border: 1px #eeeeee solid;
+	    border-radius: 3px;
+	    display: inline-block;
+	    width: 80px;
+	    height: 30px;
+	    line-height: 30px;
+	    font-size: 12px;
+	    text-align: center;
+	    color: #ffffff;
+	    background: #454545;
+	    text-decoration: none;
 	}
 	table thead tr th{
 		border-style: solid;
@@ -194,15 +204,45 @@
 					data: searchData
 				});
 			},
+			_download: function(format, ev){
+				var contents = format === 'json'
+					? JSON.stringify(this.state.data)
+					: this.state.data.reduce(function(result, row){
+						return result
+							+ row.reduce(function(rowresult, cell ,idx){
+								return rowresult
+									+'"'
+									+ cell.toString().replace(/"/g,'""')
+									+'"'
+									+(idx<row.length-1?',':'');
+							}, '')
+							+ "\n";
+					}, '');
+				var URL = window.URL || window.webkitURL;
+				var blob = new Blob([contents],{type:'text/'+format});
+				console.log(contents);
+				ev.target.href = URL.createObjectURL(blob);
+				ev.target.download = 'data.' + format;
+			},
 			_renderToolbar: function(){
 				var _s_tit = '搜索';
 				if(this.state.search === true){
 					_s_tit = '关闭搜索';
 				}
-				return React.DOM.button({
-					onClick: this._toggleSearch,
-					className: 'tb-tool'
-				},_s_tit);
+
+				return React.DOM.div({className: 'tb-tool'},
+						React.DOM.button({
+							onClick: this._toggleSearch
+						},_s_tit),
+						React.DOM.a({
+							onClick: this._download.bind(this, 'json'),
+							href: 'data.json'
+						},'导出JSON'),
+						React.DOM.a({
+							onClick: this._download.bind(this, 'csv'),
+							href: 'data.csv'
+						},'导出CSV')
+					);
 			},
 			_logstate: [], //记录组件历史状态
 			_logSetState: function(newState){
