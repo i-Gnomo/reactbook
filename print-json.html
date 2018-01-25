@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>print json</title>
+</head>
+<body>
+	<div id="printJson">
+	</div>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript">
+
+		var init_properties = [['name','张三'],['title','吃饭']];
+
+		var MyJson = React.createClass({
+				displayName: 'MyJson',
+				propTypes: {
+					myproperties: React.PropTypes.arrayOf(
+							React.PropTypes.arrayOf(
+								React.PropTypes.string
+							)
+						)
+				},
+				getInitialState: function(){
+					return {
+						data: this.props.myproperties
+					}
+				},
+				_createInput: function(opts){
+					return (
+						React.DOM.div(
+							{className: 'row'},
+							React.DOM.label(null, opts.labeltext),
+							React.DOM.input(
+								{className: opts.inputclass}
+							)
+						)
+					);
+				},
+				_createProperty: function(ev){
+					var _target = ev.target;
+					var text = _target.parentNode.children[0].getElementsByTagName('input')[0].value;
+					var value = _target.parentNode.children[1].getElementsByTagName('input')[0].value;
+					console.log(text,value);
+					var data = this.state.data;
+					var tag = false;
+						for(var i in data){
+							if(data[i] == text){
+								tag = true;
+							}
+						}
+						if(!tag){ 
+							data.push([text,value]);
+							this.setState({data: data});
+						}
+				},
+				_renderTips: function(){
+					return	React.DOM.div(
+								{className:'tips'},
+								React.DOM.p(
+									null,
+									'输入字段属性值模拟生成json格式的数据'
+								)
+							);
+				},
+				_renderForm: function(){
+					return	React.DOM.form(null,
+								this._createInput({
+									labeltext: '请输入属性名称',
+									inputclass: 'text-input'
+								}),
+								this._createInput({
+									labeltext: '请输入属性值',
+									inputclass: 'input-value'
+								}),
+								React.DOM.br(null),
+								React.DOM.button(
+									{
+										type: 'button',
+										className: 'btn',
+										onClick: this._createProperty
+									},
+									'添加'
+								)
+							);
+				},
+				_printJson: function(){
+					return React.DOM.div(null,
+							this.state.data.map(function(_v,_k){
+								return _v[0]+':\"'+_v[1]+'\"';
+							})
+						)
+				},
+				render: function(){
+					return (
+						React.DOM.div(null,
+							this._renderTips(),
+							this._renderForm(),
+							this._printJson()
+						)
+					);
+				}
+			});
+		var toJson = ReactDOM.render(
+				React.createElement(MyJson,{
+					myproperties: init_properties
+				}),
+				document.getElementById('printJson')
+			)
+
+	</script>
+</body>
+
+
+
+
+
+
+
+
