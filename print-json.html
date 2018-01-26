@@ -3,6 +3,43 @@
 <head>
 	<meta charset="utf-8" />
 	<title>print json</title>
+	<style>
+		form{
+			position: relative;
+			margin-bottom:20px;
+		}
+		form button[type='button']{
+			position: absolute;
+		    bottom: 2px;
+		    left: 290px;
+		    height: 30px;
+		    width: 67px;
+		    background-color: pink;
+		    border: 0;
+		}
+		.mytext{
+			width: 600px;
+			height: 400px;
+			resize: none;
+			color: #785E46;
+		}
+		.row{
+			height: 30px;
+			line-height: 30px;
+			padding: 5px 0;
+		}
+		.row label{
+			display: inline-block;
+			width: 100px;
+			font-size: 12px;
+			font-weight: bold;
+			text-align: right;
+		}
+		.row input[type='text']{
+			height:24px;
+			line-height: 24px;
+		}
+	</style>
 </head>
 <body>
 	<div id="printJson">
@@ -11,7 +48,7 @@
 	<script type="text/javascript" src="react/build/react-dom.js"></script>
 	<script type="text/javascript">
 
-		var init_properties = [['name','张三'],['title','吃饭']];
+		var init_properties = [];
 
 		var MyJson = React.createClass({
 				displayName: 'MyJson',
@@ -20,11 +57,13 @@
 							React.PropTypes.arrayOf(
 								React.PropTypes.string
 							)
-						)
+						),
+					mylength: React.PropTypes.number
 				},
 				getInitialState: function(){
 					return {
-						data: this.props.myproperties
+						data: this.props.myproperties,
+						len: this.props.mylength? this.props.mylength: 10
 					}
 				},
 				_createInput: function(opts){
@@ -33,7 +72,10 @@
 							{className: 'row'},
 							React.DOM.label(null, opts.labeltext),
 							React.DOM.input(
-								{className: opts.inputclass}
+								{
+									type: 'text',
+									className: opts.inputclass
+								}
 							)
 						)
 					);
@@ -42,24 +84,24 @@
 					var _target = ev.target;
 					var text = _target.parentNode.children[0].getElementsByTagName('input')[0].value;
 					var value = _target.parentNode.children[1].getElementsByTagName('input')[0].value;
-					console.log(text,value);
 					var data = this.state.data;
 					var tag = false;
 						for(var i in data){
-							if(data[i] == text){
+							if(data[i][0] == text){
 								tag = true;
+								data[i][1] = value;
 							}
 						}
 						if(!tag){ 
 							data.push([text,value]);
-							this.setState({data: data});
 						}
+						this.setState({data: data});
 				},
 				_renderTips: function(){
 					return	React.DOM.div(
 								{className:'tips'},
 								React.DOM.p(
-									null,
+									{style: { color: '#785E46' }},
 									'输入字段属性值模拟生成json格式的数据'
 								)
 							);
@@ -67,14 +109,13 @@
 				_renderForm: function(){
 					return	React.DOM.form(null,
 								this._createInput({
-									labeltext: '请输入属性名称',
+									labeltext: '请输入属性名称：',
 									inputclass: 'text-input'
 								}),
 								this._createInput({
-									labeltext: '请输入属性值',
+									labeltext: '请输入属性值：',
 									inputclass: 'input-value'
 								}),
-								React.DOM.br(null),
 								React.DOM.button(
 									{
 										type: 'button',
@@ -86,11 +127,22 @@
 							);
 				},
 				_printJson: function(){
-					return React.DOM.div(null,
-							this.state.data.map(function(_v,_k){
-								return _v[0]+':\"'+_v[1]+'\"';
-							})
-						)
+					return React.DOM.textarea({
+							className:"mytext", 
+							readOnly: true,
+							value: (function(_data,_length){
+								var _s = '\{\"rows\"\: \['
+								for(var i=0;i<_length;i++){
+									_s += '\{';
+									_s += _data.map(function(_v,_k){
+										return '\"'+_v[0]+'\":\"'+_v[1]+''+i+'\"';
+									});
+									_s += '\}'+((i!=(_length-1))?',':'');
+								}
+								_s +='\]\,\"total\"\:'+_length+'\}';
+								return _s;
+							})(this.state.data,this.state.len)
+						});
 				},
 				render: function(){
 					return (
