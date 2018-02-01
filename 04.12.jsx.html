@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>JSX && HTML</title>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript" src="babel/browser.js"></script>
+</head>
+<body>
+	<div id="app">
+	</div>
+	<script type="text/babel">
+		//保留字 class 和 for不能用
+		//style属性值是一个对象
+		//所有标签都要闭合
+		//使用驼峰命名法命名属性以及style样式属性 --所有以data-和aria-开头的属性例外（其使用方式和html相同）
+		var MyApp = React.createClass({
+			alertFun: function(ev){
+				console.log(ev.target);
+				console.log(ev.target.getAttribute('data-str')); //我获得了data-str属性
+			},
+			render: function(){
+				var emstyle = {
+					color: 'pink',
+					fontStyle: 'normal',
+					fontSize: '16px'
+				}
+				var appArr = [
+					<em key="em" className="emclass" style={emstyle} data-str="abcd" onClick={this.alertFun}>em string</em>,
+					<br key="br" />,
+					<label key="label" htmlFor="myname"><input type="text" id="myname" /></label>
+				];
+				return <div>{appArr}</div>;
+			}
+		});
+
+		ReactDOM.render(
+			<MyApp></MyApp>,
+			document.getElementById('app')
+		);
+
+		//处理表单时jsx与html的区别
+	</script>
+</body>
+
+
+
+
+
+
+
+

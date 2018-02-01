@@ -114,13 +114,17 @@
 					if(!d instanceof Object){ return; }
 					var _ndata = JSON.parse(JSON.stringify(d));
 					this.stateGroup[this.stateGroup.length] = _ndata;
-					console.log(this.stateGroup);
 					this.sIndex = this.stateGroup.length-1;
 					this.setState(d);
 				},
 				_prevStep: function(){
-					if(this.stateGroup.length === 0){ console.log('left没有了'); return;}
-					if(this.sIndex<0) { return;}
+					if(this.stateGroup.length === 0){ 
+						console.log('left没有了'); 
+						return;
+					}
+					if(this.sIndex<0) { 
+						return;
+					}
 					this.sIndex = this.sIndex-1;
 					if(this.sIndex === -1){
 						console.log('left end!');
@@ -130,8 +134,14 @@
 					this.setState(this.stateGroup[this.sIndex]);
 				},
 				_nextStep: function(){
-					if(this.stateGroup.length === 0){ console.log('right没有了'); return;}
-					if(this.sIndex >= (this.stateGroup.length-1)){ console.log('right end!'); return;}
+					if(this.stateGroup.length === 0){ 
+						console.log('right没有了'); 
+						return;
+					}
+					if(this.sIndex >= (this.stateGroup.length-1)){ 
+						console.log('right end!'); 
+						return;
+					}
 					this.sIndex = this.sIndex-(-1);
 					this.setState(this.stateGroup[this.sIndex]);
 				},
