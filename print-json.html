@@ -99,7 +99,8 @@
 								React.PropTypes.string
 							)
 						),
-					mylength: React.PropTypes.number
+					mylength: React.PropTypes.number,
+					textareaval: React.PropTypes.string
 				},
 				//组件状态属性 可改变
 				getInitialState: function(){
@@ -241,12 +242,14 @@
 				},
 				//创建Json string
 				_printJson: function(){
+					// console.log(this.props.textareaval);
 					return React.DOM.textarea({
+							id:'myTextarea',
 							className:"mytext", 
 							readOnly: true,
+							// defaultValue: this.props.textareaval,
 							value: (function(_data,_length){
 								if(_data.length == 0) return '';
-
 								var _s = '\{\n\t\"rows\"\: \['
 								for(var i=0;i<_length;i++){
 									_s += '\{\n';
@@ -275,7 +278,8 @@
 			});
 		var toJson = ReactDOM.render(
 				React.createElement(MyJson,{
-					myproperties: init_properties
+					myproperties: init_properties,
+					textareaval: '这里显示生成后的json数据'
 				}),
 				document.getElementById('printJson')
 			)
