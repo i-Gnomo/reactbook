@@ -57,6 +57,9 @@ cp -r images/ __deployme/images/
 # done
 date; echo;
 ```
+```
+$ sh scripts/deploy.sh
+```
 
 
 
