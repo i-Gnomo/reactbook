@@ -10,3 +10,7 @@ I'm a novice on the road, here are some tips.
 * browser error tip
 * error "Uncaught TypeError: _react2.default.render is not a function"
 * then change "React.render(<App/>,document.getElementById('app'));" to "ReactDOM.render(<App/>,document.getElementById('app'));"
+***
+  Question No.3
+* $ npm install --save-dev watch
+* install success, but watch command can't run success, so change the command "$ npm install -global watch"
