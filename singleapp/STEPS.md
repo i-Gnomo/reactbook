@@ -33,6 +33,7 @@ $ watch "sh scripts/build.sh" js/source css
 ```
 $ sh scripts/watch.sh
 ```
+```
 $ npm install uglify-js -g
 $ npm install cssshrink -g
 ```
