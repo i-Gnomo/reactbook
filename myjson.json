@@ -1,0 +1,25 @@
+{
+    "rows": [{
+        "nid": "92",
+        "title": "1234",
+        "ntype": "1",
+        "from": "2",
+        "target": "1",
+        "adduid": "0"
+    }, {
+        "nid": "90",
+        "title": "76878",
+        "ntype": "1",
+        "from": "1",
+        "target": "2",
+        "adduid": "87"
+    }, {
+        "nid": "89",
+        "title": "7777777777",
+        "ntype": "1",
+        "from": "1",
+        "target": "2",
+        "adduid": "87"
+    }],
+    "total": 10
+}

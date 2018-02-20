@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>jsx</title>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript" src="babel/browser.js"></script>
+	<style>
+	.a-link{color:pink;}
+	</style>
+</head>
+<body>
+	<div id="hello">
+	</div>
+	<div id="buttons"></div>
+	<div id="fancylink"</div>
+	<script type="text/babel">
+		// ReactDOM.render(
+		// 	React.DOM.div(null,
+		// 			React.DOM.span(null,'hello'),
+		// 			' my friends!'
+		// 		),
+		// 	document.getElementById('hello')
+		// );
+		
+		var jsxBox = React.createClass({
+			render: function(){
+				var myname = 'zsx';
+				var isReact = true;
+				var reactVer = 'version 01';
+				var urlStr = 'John<scr'+'ipt src="http://evil/co.js"></scr'+'ipt>';
+
+				var attr = {
+					href: 'http://example.org',
+					target: '_blank',
+					className: 'a-link'
+				}
+				return (
+					<div>
+						<span>hello {myname}</span> my friends!
+						<em>&nbsp;{
+							isReact
+							? reactVer == 'version 01'
+								?reactVer:'version xx'
+							: <strong>not react</strong>
+						}</em>
+						<div>
+							{1} plus {2} is {3}
+						</div>
+						<div>
+							{/*在jsx中添加空格*/}
+							{/*
+								上面是单行注释
+								我是多行注释
+							*/}
+							{1}
+							{' plus '}
+							{2}
+							{' is '}
+							{3}
+							{'\u007B \}'}<br/>
+							{urlStr}<br/>
+							<a href={attr.href} target={attr.target} className={attr.className}>click me</a><br/>
+							<a {...attr}>click me!Yeth!</a>
+						</div>
+					</div>
+				);
+			}
+		})
+		ReactDOM.render(
+			React.createElement(jsxBox),
+			document.getElementById('hello')
+		);
+		//babel sixtofive 6to5
+		//客户端转译操作不能再实际应用中使用 会有性能问题
+
+		//按钮组件
+		var NormalButton = React.createClass({
+			render: function(){
+				return <button>{this.props.children}</button>;
+			}
+		})
+		ReactDOM.render(
+			<NormalButton>我是按钮</NormalButton>,
+			document.getElementById('buttons')
+		);
+
+		//构建组件时命名要用大写开头
+		var FancyLink = React.createClass({
+			render: function(){
+				var ab = "12312";
+				// console.log(this.props.attrType);
+				switch(this.props.attrType){
+					case 'button':
+						//基于attrType进行一些处理
+					break;
+				}
+				var attribs = Object.assign({},this.props);
+				delete attribs.attrType;
+				console.log(attribs);
+				return <a name={ab} {...attribs}>{this.props.children}</a>;
+			}
+		})
+		ReactDOM.render(
+			<FancyLink 
+				href="http://example.org" 
+				target="_blank" 
+				className="a-link" 
+				style={{textDecoration:'none'}} 
+				attrType="button">
+				<span>我是一个链接</span>
+			</FancyLink>,
+			document.getElementById('fancylink')
+		);
+	</script>
+</body>
+
+
+
+
+
+
+
+

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>print json</title>
+	<style>
+		form{
+			position: relative;
+			margin-bottom:20px;
+		}
+		form button[type='button']{
+			cursor: pointer;
+			position: absolute;
+		    bottom: 2px;
+		    left: 290px;
+		    height: 30px;
+		    width: 67px;
+		    background-color: pink;
+		    border: 0;
+		}
+		.mytext{
+			width: 600px;
+			height: 400px;
+			resize: none;
+			color: #785E46;
+		}
+		.row{
+			height: 30px;
+			line-height: 30px;
+			padding: 5px 0;
+		}
+		.row label{
+			display: inline-block;
+			width: 100px;
+			font-size: 12px;
+			font-weight: bold;
+			text-align: right;
+		}
+		.row input[type='text']{
+			height:24px;
+			line-height: 24px;
+		}
+		.cell-li{
+			display:inline-block;
+			margin-right:20px;
+			height: 30px;
+			line-height:30px;
+			border-radius:3px;
+			border: 1px #eee solid;
+			padding: 0 0 0 10px;
+			margin-bottom: 10px;
+		}
+		.cell-li i{
+			cursor: pointer;
+			display: inline-block;
+		    padding: 0 8px;
+		    font-style: normal;
+		    font-size: 12px;
+		    float: right;
+		    margin-left: 10px;
+		    background-color: pink;
+		}
+	</style>
+</head>
+<body>
+	<div id="printJson">
+	</div>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript">
+
+		var init_properties = [];
+
+		var logMixin = {
+			_log: function(methodName, args){
+				console.log(methodName, args);
+			},
+			componentDidMount: function(){
+				this._log('componentDidMount', arguments);
+				document.onkeydown = function(e){
+					if(e.shiftKey && e.keyCode === 37){
+						//left prev
+						this._prevStep();
+					}
+					if(e.shiftKey && e.keyCode === 39){
+						//right next
+						this._nextStep();
+					}
+				}.bind(this);
+			}
+		}
+		var MyJson = React.createClass({
+				displayName: 'MyJson',
+				mixins: [logMixin],
+				//property组件属性 数据值
+				propTypes: {
+					myproperties: React.PropTypes.arrayOf(
+							React.PropTypes.arrayOf(
+								React.PropTypes.string
+							)
+						),
+					mylength: React.PropTypes.number,
+					textareaval: React.PropTypes.string
+				},
+				//组件状态属性 可改变
+				getInitialState: function(){
+					return {
+						data: this.props.myproperties,
+						len: this.props.mylength? this.props.mylength: 10
+					}
+				},
+				sIndex: 0,
+				stateGroup: [],
+				_setStateData: function(d){
+					if(!d instanceof Object){ return; }
+					var _ndata = JSON.parse(JSON.stringify(d));
+					this.stateGroup[this.stateGroup.length] = _ndata;
+					this.sIndex = this.stateGroup.length-1;
+					this.setState(d);
+				},
+				_prevStep: function(){
+					if(this.stateGroup.length === 0){ 
+						console.log('left没有了'); 
+						return;
+					}
+					if(this.sIndex<0) { 
+						return;
+					}
+					this.sIndex = this.sIndex-1;
+					if(this.sIndex === -1){
+						console.log('left end!');
+						this.setState({data:[]}); 
+						return;
+					}
+					this.setState(this.stateGroup[this.sIndex]);
+				},
+				_nextStep: function(){
+					if(this.stateGroup.length === 0){ 
+						console.log('right没有了'); 
+						return;
+					}
+					if(this.sIndex >= (this.stateGroup.length-1)){ 
+						console.log('right end!'); 
+						return;
+					}
+					this.sIndex = this.sIndex-(-1);
+					this.setState(this.stateGroup[this.sIndex]);
+				},
+				//input输入框
+				_createInput: function(opts){
+					return (
+						React.DOM.div(
+							{className: 'row'},
+							React.DOM.label(null, opts.labeltext),
+							React.DOM.input(
+								{
+									type: 'text',
+									className: opts.inputclass
+								}
+							)
+						)
+					);
+				},
+				_createProperty: function(ev){
+					var _target = ev.target;
+					var text = _target.parentNode.children[0].getElementsByTagName('input')[0].value;
+					var value = _target.parentNode.children[1].getElementsByTagName('input')[0].value;
+					var data = this.state.data;
+					var tag = false;
+						for(var i in data){
+							if(data[i][0] == text){
+								tag = true;
+								data[i][1] = value;
+							}
+						}
+						if(!tag){ 
+							data.push([text,value]);
+						}
+						this._setStateData({data: data});
+				},
+				//提示tip
+				_renderTips: function(){
+					return	React.DOM.div(
+								{className:'tips'},
+								React.DOM.p(
+									{style: { color: '#785E46' }},
+									'输入字段属性值模拟生成json格式的数据'
+								)
+							);
+				},
+				//生成json的form表单
+				_renderForm: function(){
+					return	React.DOM.form(null,
+								this._createInput({
+									labeltext: '请输入属性名称：',
+									inputclass: 'text-input'
+								}),
+								this._createInput({
+									labeltext: '请输入属性值：',
+									inputclass: 'input-value'
+								}),
+								React.DOM.button(
+									{
+										type: 'button',
+										className: 'btn',
+										onClick: this._createProperty
+									},
+									'添加'
+								)
+							);
+				},
+				//删除json某个字段
+				_deleteProperty: function(ev){
+					var _target = ev.target;
+					var _name = _target.parentNode.getElementsByTagName('input')[0].value;
+					var data = this.state.data;
+						for(var i in data){
+							if(data[i][0] == _name){
+								data.splice(i,1);
+								break;
+							}
+						}
+					this._setStateData({data: data});
+				},
+				_renderPropsList: function(){
+					return React.DOM.ul(null,
+							this.state.data.map(function(_v,_k){
+								return React.DOM.li({key: _k, className: 'cell-li'},
+										React.DOM.span(null, _v[0]),
+										React.DOM.input({
+											type: 'hidden',
+											name: 'jsonprop',
+											value: _v[0]
+										}),
+										React.DOM.i({
+											className: 'del-btn',
+											onClick: this._deleteProperty
+										},'删除')
+									);
+							},this)
+						);
+				},
+				//创建Json string
+				_printJson: function(){
+					// console.log(this.props.textareaval);
+					return React.DOM.textarea({
+							id:'myTextarea',
+							className:"mytext", 
+							readOnly: true,
+							// defaultValue: this.props.textareaval,
+							value: (function(_data,_length){
+								if(_data.length == 0) return '';
+								var _s = '\{\n\t\"rows\"\: \['
+								for(var i=0;i<_length;i++){
+									_s += '\{\n';
+									_s += _data.map(function(_v,_k){
+										return '\t\t\"'+_v[0]+'\":\"'+_v[1]+''+i+'\"';
+									}).join(',\n');
+									_s += '\n\t\}'+((i!=(_length-1))?',':'');
+								}
+								_s +='\]\,\n\t\"total\"\:'+_length+'\n\}';
+								return _s;
+
+							})(this.state.data,this.state.len)
+						});
+				},
+				render: function(){
+					//渲染
+					return (
+						React.DOM.div(null,
+							this._renderTips(),
+							this._renderForm(),
+							this._renderPropsList(),
+							this._printJson()
+						)
+					);
+				}
+			});
+		var toJson = ReactDOM.render(
+				React.createElement(MyJson,{
+					myproperties: init_properties,
+					textareaval: '这里显示生成后的json数据'
+				}),
+				document.getElementById('printJson')
+			)
+
+	</script>
+</body>
+
+
+
+
+
+
+
+

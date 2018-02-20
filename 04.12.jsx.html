@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>JSX && HTML</title>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript" src="babel/browser.js"></script>
+</head>
+<body>
+	<div id="app"></div>
+	<div id="app2"></div>
+	<div id="app3"></div>
+	<br/>
+	<div id="text1"></div>
+	<div id="text2"></div>
+	<div id="text3"></div>
+	<div id="text4"></div>
+	<br/>
+	<div id="selectDiv"></div>
+	<div id="selectDiv2"></div>
+	<script type="text/babel">
+	/*
+		//保留字 class 和 for不能用
+		//style属性值是一个对象
+		//所有标签都要闭合
+		//使用驼峰命名法命名属性以及style样式属性 --所有以data-和aria-开头的属性例外（其使用方式和html相同）
+	*/
+		var MyApp = React.createClass({
+			alertFun: function(ev){
+				console.log(ev.target);
+				console.log(ev.target.getAttribute('data-str')); //我获得了data-str属性
+			},
+			_log: function(ev){
+				console.log('value:'+ev.target.value); //log value的值
+				console.log('defaultValue:'+ev.target.defaultValue); //log defaultValue为空
+				//打印信息与书中不符
+			},
+			render: function(){
+				var emstyle = {
+					color: 'pink',
+					fontStyle: 'normal',
+					fontSize: '16px'
+				}
+				var appArr = [
+					<em key="em" className="emclass" style={emstyle} data-str="abcd" onClick={this.alertFun}>em string</em>,
+					<br key="br" />,
+					<label key="label" htmlFor="myname"><input type="text" id="myname" onChange={this._log} /></label>
+				];
+				return <div>{appArr}</div>;
+			}
+		});
+
+		ReactDOM.render(
+			<MyApp></MyApp>,
+			document.getElementById('app')
+		);
+	/*
+		//处理表单时jsx与html的区别
+		//onChange事件会在用户输入时触发而不是元素失去焦点时触发
+		//html中 原生js获取value值xxinput.value和xxinput.getAttribute('value')的值不同
+		//reactjs中 defaultValue作为回填默认值
+
+	*/
+		function log(ev){
+			console.log('value:'+ev.target.value);
+			console.log('defaultValue:'+ev.target.defaultValue);
+		}
+		ReactDOM.render(<input defaultValue="hello" onChange={log} />,document.getElementById('app2'));
+
+	/*
+		//textarea的value和defaultValue
+	*/
+		ReactDOM.render(<textarea defaultValue="hello\nworld!" onChange={log}></textarea>,document.getElementById('text1'));
+		ReactDOM.render(<textarea defaultValue={"hello\nworld!"} onChange={log}></textarea>,document.getElementById('text2'));
+
+		// ReactDOM.render(<textarea onChange={log}>hello
+		// 	world!</textarea>,document.getElementById('text3'));
+		// ReactDOM.render(<textarea onChange={log}>{"hello\nworld!"}</textarea>,document.getElementById('text4'));
+
+		//Warning: Use the `defaultValue` or `value` props instead of setting children on <textarea>.
+
+		ReactDOM.render(<select defaultValue={["2","4"]} multiple={true} onChange={log}>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+		</select>,document.getElementById('selectDiv'));
+
+		var MySelect = React.createClass({
+			propTypes:{
+				selectval: React.PropTypes.string
+			},
+			getInitialState: function(){
+				return {
+					value: this.props.selectval
+				}
+			},
+			_onChange: function(ev){
+				this.setState({"value": ev.target.value});
+			},
+			render: function(){
+				return (
+					<select defaultValue={this.state.value} onChange={this._onChange}>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+				);
+			}
+		});
+		ReactDOM.render(
+			React.createElement(MySelect,{selectval: "3"}),
+			document.getElementById('selectDiv2')
+		);
+	</script>
+</body>
+
+
+
+
+
+
+
+
