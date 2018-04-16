@@ -219,7 +219,9 @@
 							+ "\n";
 					}, '');
 				var URL = window.URL || window.webkitURL;
+				//使用Blob构造函数创建一个类似文件对象的原始数据
 				var blob = new Blob([contents],{type:'text/'+format});
+				console.log(blob.size);
 				console.log(contents);
 				ev.target.href = URL.createObjectURL(blob);
 				ev.target.download = 'data.' + format;
@@ -336,6 +338,10 @@
 		//虚拟DOM diff算法
 		//轻量级操作DOM 
 		//使用事件委托响应用户交互
+
+		// Array.prototype.map(function(item,index,array){},this);
+
+		// Function.prototype.bind();
 
 	</script>
 </body>
