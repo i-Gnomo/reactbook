@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>JSX && Excel</title>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript" src="babel/browser.js"></script>
+	<style>
+	table{
+		min-width: 800px;
+		border-left: 1px #eeeeee solid;
+		border-spacing: 0;
+	}
+	table thead tr th{
+		font-weight: bold;
+		text-align: left;
+		background-color: #454545;
+    	color: #ffffff;
+    	cursor: pointer;
+	}
+	table tr,table tr td{
+		height: 30px;
+		text-indent: 3px;
+	}
+	.tb-tool button,
+	.tb-tool a{
+	    margin: 20px 20px 20px 0;
+	    padding: 0;
+	    border: 1px #eeeeee solid;
+	    border-radius: 3px;
+	    display: inline-block;
+	    width: 80px;
+	    height: 30px;
+	    line-height: 30px;
+	    font-size: 12px;
+	    text-align: center;
+	    color: #ffffff;
+	    background: #454545;
+	    text-decoration: none;
+	}
+	table thead tr th{
+		border-style: solid;
+		border-color: gray;
+		border-width: 0 1px 1px 0;
+	}
+	table tr td{
+		border-style: solid;
+		border-color: #eeeeee;
+		border-width: 0 1px 1px 0;
+	}
+	table tr td input{
+		padding: 0;
+	    margin: 3px 0;
+	    height: 24px;
+	    line-height: 24px;
+	    border: 1px #cccccc solid;
+	}
+	</style>
+</head>
+<body>
+	<div id="excel"></div>
+	<script type="text/babel">
+		var headers = [["Book","300"],["Author(s)","150"],["Language","150"],["Published","150"],["Sales","150"]];
+
+		var data = [
+			["The Tale of Peter Rabbit","Beatrix Potter","English","1902","45 million"],
+			["The Odyssey","Homer","Ancient Greek","8th Century BC","45 million"],
+			["Jonathan Livingston Seagull","Richard Bach","English","1970","44 million"],
+			["The Very Hungry Caterpillar","Eric Carle","English","1969","43 million"],
+			["A Message to Garcia","Elbert Hubbard","English", 1899,"40 million"],
+			["Sofies verden (Sophie's World)","Jostein Gaarder","Norwegian","1991","40 million"]
+		];
+
+		var logMixin = {
+			_log: function(methodName, args){
+				console.log(methodName, args);
+			},
+			// componentWillUpdate: function(){},
+			// conmponentDidUpdate: function(){},
+			// componentWillMount: function(){},
+			componentDidMount: function(){
+				this._log('componentDidMount',arguments);
+			}
+		}
+		
+		var MySelect = React.createClass({
+			propTypes:{
+				selectval: React.PropTypes.array
+			},
+			getInitialState: function(){
+				return {
+					value: this.props.selectval
+				}
+			},
+			_onChange: function(ev){
+				this.setState({"value": ev.target.value});
+			},
+			render: function(){
+				return (
+					<select defaultValue={this.state.value} multiple={true} onChange={this._onChange}>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+				);
+			}
+		});
+		ReactDOM.render(
+			<MySelect selectval={["2","3"]}></MySelect>,
+			document.getElementById('excel')
+		);
+	</script>
+</body>
+
+
+
+
+
+
+
+
