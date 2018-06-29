@@ -5,6 +5,11 @@
 	width: 142px;
 	height: 35px;
 	vertical-align: top;
+}
+.greeting{
+	font-size: 16px;
+    color: pink;
+    margin: 0;
 }html{
 	background-color: white;
 	font: 16px Arial;

@@ -3,6 +3,9 @@
 <head>
 	<meta charset="utf-8" />
 	<title>table component</title>
+	<script type="text/javascript" src="react/build/react.js"></script>
+	<script type="text/javascript" src="react/build/react-dom.js"></script>
+	<script type="text/javascript" src="babel/browser.js"></script>
 	<style>
 	table{
 		min-width: 800px;
@@ -58,9 +61,7 @@
 <body>
 	<div id="table">
 	</div>
-	<script type="text/javascript" src="react/build/react.js"></script>
-	<script type="text/javascript" src="react/build/react-dom.js"></script>
-	<script type="text/javascript">
+	<script type="text/babel">
 		var headers = [["Book","300"],["Author(s)","150"],["Language","150"],["Published","150"],["Sales","150"]];
 
 		var data = [
@@ -72,59 +73,17 @@
 			["Sofies verden (Sophie's World)","Jostein Gaarder","Norwegian","1991","40 million"]
 		];
 		var logMixin = {
-			//生命周期示例 -输出日志记录
 			_log: function(methodName, args){
 				console.log(methodName, args);
 			},
-			// componentWillMount: function(){
-			// 	this._log('componentWillMount', arguments);
-			// },
 			componentDidMount: function(){
-				//箭头函数 this的指向
-				// function make(a){
-				// 	this.age = a;
-				// 	return a => {
-				// 		console.log(this,a);
-				// 	}
-				// }
-				// var test = make.call({ name:'abc'},'19'); 
-				// test(); 
-				// test.call({ name:'def'},'20');
-				
-				//传参数的箭头函数
-				var abc = 'abc';
-				var demoabc = (abc) => {
-					//可以使用多条语句
-					abc +='def';
-					return abc.split('');
-					// console.log(this, abc.split(''))
-				};
-				console.log(demoabc(abc));
-
 				this._log('componentDidMount', arguments);
 				document.onkeydown = function(e){
 					if(e.altKey && e.shiftKey && e.keyCode === 82){
 						this._replay();
 					}
 				}.bind(this);
-			},
-			// componentWillReceiveProps: function(nextProps){
-			// 	this._log('componentWillReceiveProps', nextProps);
-			// },
-			// shouldComponentUpdate: function(nextProps, nextState){
-			// 	//diff算法??
-			// 	this._log('shouldComponentUpdate', nextState);
-			// 	return true;
-			// },
-			// componentWillUpdate: function(){
-			// 	this._log('componentWillUpdate', arguments);
-			// },
-			// componentDidUpdate: function(){
-			// 	this._log('componentDidUpdate', arguments);
-			// },
-			// componentWillUnmount: function(){
-			// 	this._log('componentWillUnmount', arguments);
-			// },
+			}
 		};
 
 		var MyTable = React.createClass({
@@ -202,21 +161,17 @@
 					return null;
 				}
 				return (
-					React.DOM.tr({onChange: this._search},
+					<tr onChange={this._search}>
+					{
 						this.props.headers.map(function(title,_k){
 							return (
-								React.DOM.td({key: _k},
-									React.DOM.input({
-										type: 'text',
-										style: {
-											width: (parseInt(title[1])-8)+'px'
-										},
-										'data-k': _k
-									})
-								)
+								<td key={_k}>
+									<input type="text" style={{width: (parseInt(title[1])-8)+'px'}} data-k={_k} />
+								</td>
 							);
 						})
-					)
+					}
+					</tr>
 				);
 			},
 			_search: function(ev){
@@ -226,10 +181,6 @@
 					return;
 				}
 				var rIndex = ev.target.dataset.k;
-				// var searchData = this.state.data.filter(function(row){
-				// 	return row[rIndex].toString().toLowerCase().indexOf(_v) >-1;
-				// });
-				// var searchData = this.state.data.filter(row => row[rIndex].toString().toLowerCase().indexOf(_v) >-1);
 				var searchData = this._preSearchData.filter(row => row[rIndex].toString().toLowerCase().indexOf(_v) >-1);
 
 				this._logSetState({
@@ -253,8 +204,6 @@
 				var URL = window.URL || window.webkitURL;
 				//使用Blob构造函数创建一个类似文件对象的原始数据
 				var blob = new Blob([contents],{type:'text/'+format});
-				// console.log(blob.size);
-				// console.log(contents);
 				ev.target.href = URL.createObjectURL(blob);
 				ev.target.download = 'data.' + format;
 			},
@@ -264,19 +213,13 @@
 					_s_tit = '关闭搜索';
 				}
 
-				return React.DOM.div({className: 'tb-tool'},
-						React.DOM.button({
-							onClick: this._toggleSearch
-						},_s_tit),
-						React.DOM.a({
-							onClick: this._download.bind(this, 'json'),
-							href: 'data.json'
-						},'导出JSON'),
-						React.DOM.a({
-							onClick: this._download.bind(this, 'csv'),
-							href: 'data.csv'
-						},'导出CSV')
-					);
+				return (
+					<div className='tb-tool'>
+						<button onClick={this._toggleSearch}>{_s_tit}</button>
+						<a onClick={this._download.bind(this, 'json')} href="data.json">导出JSON</a>
+						<a onClick={this._download.bind(this, 'csv')} href='data.csv'>导出CSV</a>
+					</div>
+				);
 			},
 			_logstate: [], //记录组件历史状态
 			_logSetState: function(newState){
@@ -300,88 +243,60 @@
 			},
 			_renderTable: function(){
 				return (
-					React.DOM.table(null,
-						React.DOM.thead({onClick: this._sort},
-							React.DOM.tr(null,
+					<table>
+						<thead onClick={this._sort}>
+							<tr>{
 								this.props.headers.map(function(title,index){
 									var _title = title[0];
 									if(this.state.sortby === index){
 										_title += this.state.descending? '\u2191':'\u2193';
 									}
-									return React.DOM.th({
-										key: index,
-										style:{
-											width: title[1]+'px'
-										}
-									},_title);
+									return <th key={index} style={{width: title[1]+'px'}}>{_title}</th>
 								},this)
-							)
-						),
-						React.DOM.tbody({
-								onDoubleClick: this._showEditor //双击时编辑单元格
-							},
-							this._renderSearch(),
-							this.state.data.map(function(row_v,row_k){
-								return (React.DOM.tr({key: row_k},
-										row_v.map(function(_v,_k){
-											var content = _v;
-											//判断当前点击的单元格索引
-											var edit = this.state.edit;
-											if(edit && edit.row === row_k && edit.cell === _k){
-												content = React.DOM.form({
-														onSubmit: this._save
-													},
-													React.DOM.input({
-														type:'text',
-														defaultValue: content
-													})
-												);
+							}</tr>
+						</thead>
+						<tbody onDoubleClick={this._showEditor}>
+							{this._renderSearch()}
+							{
+								this.state.data.map(function(row_v,row_k){
+									return (
+										<tr key={row_k}>
+											{
+												row_v.map(function(_v,_k){
+													var content = _v;
+													//判断当前点击的单元格索引
+													var edit = this.state.edit;
+													if(edit && edit.row === row_k && edit.cell === _k){
+														content = (
+															<form onSubmit={this._save}>
+																<input type="text" defaultValue={_v} />
+															</form>
+														);
+													}
+													return <td key={_k} data-row={row_k}>{content}</td>;
+												},this)
 											}
-											return React.DOM.td({
-												key: _k,
-												'data-row': row_k
-											},content);
-										},this)
-									)
-								);
-							},this)
-						)
-					)
+										</tr>
+									);
+								},this)
+							}
+						</tbody>
+					</table>
 				);
 			},
 
 			render: function(){
 				return (
-					React.DOM.div(null,
-						this._renderToolbar(),
-						this._renderTable()
-					)
+					<div>
+						{this._renderToolbar()}
+						{this._renderTable()}
+					</div>
 				);
 			}
 		});
 		var myTableRender = ReactDOM.render(
-			React.createElement(MyTable,{
-				headers: headers,
-				initialData: data
-			}),
+			<MyTable headers={headers} initialData={data}></MyTable>,
 			document.getElementById("table")
 		)
-
-		//虚拟DOM diff算法
-		//轻量级操作DOM 
-		//使用事件委托响应用户交互
-
-		// Array.prototype.map(function(item,index,array){},this);
-
-		// Function.prototype.bind();
-
 	</script>
 </body>
-
-
-
-
-
-
-
-

@@ -16,14 +16,16 @@ var _FancyLink = require('./components/FancyLink');
 
 var _FancyLink2 = _interopRequireDefault(_FancyLink);
 
+var _Video = require('./components/Video');
+
+var _Video2 = _interopRequireDefault(_Video);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom2.default.render(_react2.default.createElement(
-	'h1',
+	'div',
 	null,
 	_react2.default.createElement(_Logo2.default, null),
-	' Welcome to the App!',
-	_react2.default.createElement('br', null),
 	_react2.default.createElement(
 		_FancyLink2.default,
 		{
@@ -37,5 +39,6 @@ _reactDom2.default.render(_react2.default.createElement(
 			null,
 			'click me'
 		)
-	)
+	),
+	_react2.default.createElement(_Video2.default, { style: { width: '300px', height: '200px' }, videosrc: 'images/video.mp4' })
 ), document.getElementById('app'));
