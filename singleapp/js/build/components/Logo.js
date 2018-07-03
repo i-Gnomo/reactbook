@@ -18,9 +18,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/*react版本16以后弃用了React.createClass方法*/
 // var Logo = React.createClass({
 // 	render: function(){
-// 		return <div className="Logo" />;
+// 		console.log('hahahahahahhaahhahahahahaha');
+// 		var greeting = [<span key="hello">Hello</span>,' ',<span key="world">world</span>,'!'];
+// 		return <div><a className="Logo" />Welcome to the App!<p className="greeting" style={{paddingLeft:'40px'}}>{greeting}</p></div>;
 // 	}
 // })
 var Logo = function (_React$Component) {
