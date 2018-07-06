@@ -209,7 +209,7 @@ var headers = localStorage.getItem('headers');
 var data = localStorage.getItem('data');
 if (!headers) {
 	headers = [["Title", "300"], ["Year", "150"], ["Rating", "150"], ["Comments", "150"]];
-	data = [['Test', '2015', '3', 'meh']];
+	data = [['one', '2016', '3', 'meh'], ['two', '2017', '7', 'meh'], ['three', '2018', '9', 'meh']];
 	console.log(headers);
 }
 

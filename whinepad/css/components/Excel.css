@@ -1,0 +1,49 @@
+.Excel table{
+	min-width: 800px;
+	border-left: 1px #eeeeee solid;
+	border-spacing: 0;
+}
+.Excel table thead tr th{
+	font-weight: bold;
+	text-align: left;
+	background-color: #454545;
+	color: #ffffff;
+	cursor: pointer;
+}
+.Excel table tr,table tr td{
+	height: 30px;
+	text-indent: 3px;
+}
+.Excel .tb-tool button,
+.Excel .tb-tool a{
+    margin: 20px 20px 20px 0;
+    padding: 0;
+    border: 1px #eeeeee solid;
+    border-radius: 3px;
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    text-align: center;
+    color: #ffffff;
+    background: #454545;
+    text-decoration: none;
+}
+.Excel table thead tr th{
+	border-style: solid;
+	border-color: gray;
+	border-width: 0 1px 1px 0;
+}
+.Excel table tr td{
+	border-style: solid;
+	border-color: #eeeeee;
+	border-width: 0 1px 1px 0;
+}
+.Excel table tr td input{
+	padding: 0;
+    margin: 3px 0;
+    height: 24px;
+    line-height: 24px;
+    border: 1px #cccccc solid;
+}
