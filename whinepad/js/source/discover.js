@@ -6,6 +6,7 @@ import Logo from './components/Logo';
 import Button from './components/Button';
 import Suggest from './components/Suggest';
 import Rating from './components/Rating';
+import FormInput from './components/FormInput';
 
 /*
 test-driven development TDD
@@ -29,6 +30,37 @@ ReactDOM.render(
   		<div>Initial value 4: <Rating defaultValue={4} /></div> 
   		<div>Rating width max value：<Rating max={11} id="myRating" /></div>
   		<div>Rating width readonly：<Rating readonly={true} defaultValue={3} /></div>
+
+  		<h2>FormInput</h2>
+  		<table>
+  			<tbody>
+  				<tr>
+  					<td>forminput</td>
+  					<td><FormInput /></td>
+  				</tr>
+  				<tr>
+  					<td>width defaultValue</td>
+  					<td><FormInput defaultValue="this is react" /></td>
+  				</tr>
+  				<tr>
+  					<td>year</td>
+  					<td><FormInput type="year" /></td>
+  				</tr>
+  				<tr>
+  					<td>rating</td>
+  					<td><FormInput type="rating" defaultValue={4} /></td>
+  				</tr>
+  				<tr>
+  					<td>Suggest</td>
+  					<td><FormInput type="suggest" options={['chenningning','chentiewei','zhangshaoxuan','wangchen','test','yeyeye']} /></td>
+  				</tr>
+  				<tr>
+  					<td>textarea</td>
+  					<td><FormInput type="text" /></td>
+  				</tr>
+  			</tbody>
+  		</table>
+
   	</div>,
 	document.getElementById("pad")
 );

@@ -225,7 +225,101 @@ Button.propTypes = {
 };
 
 exports.default = Button;
-},{"classnames":7,"prop-types":26,"react":33}],3:[function(require,module,exports){
+},{"classnames":8,"prop-types":27,"react":34}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _Suggest = require('./Suggest');
+
+var _Suggest2 = _interopRequireDefault(_Suggest);
+
+var _Rating = require('./Rating');
+
+var _Rating2 = _interopRequireDefault(_Rating);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FormInput = function (_Component) {
+	_inherits(FormInput, _Component);
+
+	function FormInput() {
+		_classCallCheck(this, FormInput);
+
+		return _possibleConstructorReturn(this, (FormInput.__proto__ || Object.getPrototypeOf(FormInput)).apply(this, arguments));
+	}
+
+	_createClass(FormInput, [{
+		key: 'getValue',
+		value: function getValue() {
+			return 'value' in this.refs.input ? this.refs.input.value : this.refs.input.getValue();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var common = {
+				id: this.props.id,
+				ref: 'input',
+				defaultValue: this.props.defaultValue
+			};
+			switch (this.props.type) {
+				case 'year':
+					return _react2.default.createElement('input', _extends({}, common, {
+						type: 'number',
+						defaultValue: this.props.defaultValue || new Date().getFullYear()
+					}));
+					break;
+				case 'rating':
+					return _react2.default.createElement(_Rating2.default, _extends({}, common, { max: 10, defaultValue: parseInt(this.props.defaultValue, 10) }));
+					break;
+				case 'suggest':
+					return _react2.default.createElement(_Suggest2.default, _extends({}, common, { options: this.props.options }));
+					break;
+				case 'text':
+					return _react2.default.createElement('textarea', common);
+					break;
+				default:
+					return _react2.default.createElement('input', _extends({}, common, { type: 'text' }));
+			}
+		}
+	}]);
+
+	return FormInput;
+}(_react.Component);
+
+FormInput.propTypes = {
+	id: _propTypes2.default.string,
+	type: _propTypes2.default.oneOf(['input', 'year', 'rating', 'suggest', 'text']),
+	options: _propTypes2.default.array,
+	defaultValue: _propTypes2.default.any
+};
+
+exports.default = FormInput;
+},{"./Rating":5,"./Suggest":6,"classnames":8,"prop-types":27,"react":34}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -266,7 +360,7 @@ var Logo = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Logo;
-},{"react":33}],4:[function(require,module,exports){
+},{"react":34}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -384,7 +478,7 @@ Rating.propTypes = {
 };
 
 exports.default = Rating;
-},{"classnames":7,"prop-types":26,"react":33}],5:[function(require,module,exports){
+},{"classnames":8,"prop-types":27,"react":34}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -465,7 +559,7 @@ Suggest.propTypes = {
 	options: _propTypes2.default.arrayOf(_propTypes2.default.string)
 };
 exports.default = Suggest;
-},{"classnames":7,"prop-types":26,"react":33}],6:[function(require,module,exports){
+},{"classnames":8,"prop-types":27,"react":34}],7:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -492,6 +586,10 @@ var _Rating = require('./components/Rating');
 
 var _Rating2 = _interopRequireDefault(_Rating);
 
+var _FormInput = require('./components/FormInput');
+
+var _FormInput2 = _interopRequireDefault(_FormInput);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*
@@ -499,102 +597,199 @@ test-driven development TDD
  */
 
 _reactDom2.default.render(_react2.default.createElement(
-	'div',
-	{ style: { padding: "20px" } },
-	_react2.default.createElement(
-		'h1',
-		null,
-		'Component discover'
-	),
-	_react2.default.createElement(
-		'h2',
-		null,
-		'Logo'
-	),
-	_react2.default.createElement(
-		'div',
-		{ style: { display: "inline-block", background: "purple" } },
-		_react2.default.createElement(_Logo2.default, null)
-	),
-	_react2.default.createElement(
-		'h2',
-		null,
-		'Button'
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'Button with onCick\uFF1A',
-		_react2.default.createElement(
-			_Button2.default,
-			{ onClick: function onClick() {
-					return alert("hoho");
-				} },
-			'Click me'
-		)
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'A link: ',
-		_react2.default.createElement(
-			_Button2.default,
-			{ href: 'http://react-china.org/', target: '_blank' },
-			'Follow me'
-		)
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'Custom class name: ',
-		_react2.default.createElement(
-			_Button2.default,
-			{ className: 'custom' },
-			'I do nothing'
-		)
-	),
-	_react2.default.createElement(
-		'h2',
-		null,
-		'Suggest'
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'Suggest with datalist\uFF1A',
-		_react2.default.createElement(_Suggest2.default, { id: 'mySuggest', options: ['chenningning', 'chentiewei', 'zhangshaoxuan', 'wangchen', 'test', 'yeyeye'], defaultValue: 'test' })
-	),
-	_react2.default.createElement(
-		'h2',
-		null,
-		'Rating'
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'Rating default\uFF1A',
-		_react2.default.createElement(_Rating2.default, null)
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'Initial value 4: ',
-		_react2.default.createElement(_Rating2.default, { defaultValue: 4 })
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'Rating width max value\uFF1A',
-		_react2.default.createElement(_Rating2.default, { max: 11, id: 'myRating' })
-	),
-	_react2.default.createElement(
-		'div',
-		null,
-		'Rating width readonly\uFF1A',
-		_react2.default.createElement(_Rating2.default, { readonly: true, defaultValue: 3 })
-	)
+  'div',
+  { style: { padding: "20px" } },
+  _react2.default.createElement(
+    'h1',
+    null,
+    'Component discover'
+  ),
+  _react2.default.createElement(
+    'h2',
+    null,
+    'Logo'
+  ),
+  _react2.default.createElement(
+    'div',
+    { style: { display: "inline-block", background: "purple" } },
+    _react2.default.createElement(_Logo2.default, null)
+  ),
+  _react2.default.createElement(
+    'h2',
+    null,
+    'Button'
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'Button with onCick\uFF1A',
+    _react2.default.createElement(
+      _Button2.default,
+      { onClick: function onClick() {
+          return alert("hoho");
+        } },
+      'Click me'
+    )
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'A link: ',
+    _react2.default.createElement(
+      _Button2.default,
+      { href: 'http://react-china.org/', target: '_blank' },
+      'Follow me'
+    )
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'Custom class name: ',
+    _react2.default.createElement(
+      _Button2.default,
+      { className: 'custom' },
+      'I do nothing'
+    )
+  ),
+  _react2.default.createElement(
+    'h2',
+    null,
+    'Suggest'
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'Suggest with datalist\uFF1A',
+    _react2.default.createElement(_Suggest2.default, { id: 'mySuggest', options: ['chenningning', 'chentiewei', 'zhangshaoxuan', 'wangchen', 'test', 'yeyeye'], defaultValue: 'test' })
+  ),
+  _react2.default.createElement(
+    'h2',
+    null,
+    'Rating'
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'Rating default\uFF1A',
+    _react2.default.createElement(_Rating2.default, null)
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'Initial value 4: ',
+    _react2.default.createElement(_Rating2.default, { defaultValue: 4 })
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'Rating width max value\uFF1A',
+    _react2.default.createElement(_Rating2.default, { max: 11, id: 'myRating' })
+  ),
+  _react2.default.createElement(
+    'div',
+    null,
+    'Rating width readonly\uFF1A',
+    _react2.default.createElement(_Rating2.default, { readonly: true, defaultValue: 3 })
+  ),
+  _react2.default.createElement(
+    'h2',
+    null,
+    'FormInput'
+  ),
+  _react2.default.createElement(
+    'table',
+    null,
+    _react2.default.createElement(
+      'tbody',
+      null,
+      _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          null,
+          'forminput'
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(_FormInput2.default, null)
+        )
+      ),
+      _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          null,
+          'width defaultValue'
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(_FormInput2.default, { defaultValue: 'this is react' })
+        )
+      ),
+      _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          null,
+          'year'
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(_FormInput2.default, { type: 'year' })
+        )
+      ),
+      _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          null,
+          'rating'
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(_FormInput2.default, { type: 'rating', defaultValue: 4 })
+        )
+      ),
+      _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          null,
+          'Suggest'
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(_FormInput2.default, { type: 'suggest', options: ['chenningning', 'chentiewei', 'zhangshaoxuan', 'wangchen', 'test', 'yeyeye'] })
+        )
+      ),
+      _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          null,
+          'textarea'
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(_FormInput2.default, { type: 'text' })
+        )
+      )
+    )
+  )
 ), document.getElementById("pad"));
-},{"./components/Button":2,"./components/Logo":3,"./components/Rating":4,"./components/Suggest":5,"react":33,"react-dom":30}],7:[function(require,module,exports){
+},{"./components/Button":2,"./components/FormInput":3,"./components/Logo":4,"./components/Rating":5,"./components/Suggest":6,"react":34,"react-dom":31}],8:[function(require,module,exports){
 /*!
   Copyright (c) 2017 Jed Watson.
   Licensed under the MIT License (MIT), see
@@ -648,7 +843,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	}
 }());
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -682,7 +877,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 /**
@@ -712,7 +907,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -750,7 +945,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":9}],11:[function(require,module,exports){
+},{"./camelize":10}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -788,7 +983,7 @@ function containsNode(outerNode, innerNode) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":19}],12:[function(require,module,exports){
+},{"./isTextNode":20}],13:[function(require,module,exports){
 "use strict";
 
 /**
@@ -825,7 +1020,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -845,7 +1040,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":1}],14:[function(require,module,exports){
+},{"_process":1}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -882,7 +1077,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 /**
@@ -913,7 +1108,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -950,7 +1145,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":15}],17:[function(require,module,exports){
+},{"./hyphenate":16}],18:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1006,7 +1201,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":1}],18:[function(require,module,exports){
+},{"_process":1}],19:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1029,7 +1224,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1052,7 +1247,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":18}],20:[function(require,module,exports){
+},{"./isNode":19}],21:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1118,7 +1313,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -1183,7 +1378,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":12,"_process":1}],22:[function(require,module,exports){
+},{"./emptyFunction":13,"_process":1}],23:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -1275,7 +1470,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1370,7 +1565,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":27,"_process":1}],24:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":28,"_process":1}],25:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1431,7 +1626,7 @@ module.exports = function() {
   return ReactPropTypes;
 };
 
-},{"./lib/ReactPropTypesSecret":27}],25:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":28}],26:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1990,7 +2185,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":23,"./lib/ReactPropTypesSecret":27,"_process":1,"object-assign":22}],26:[function(require,module,exports){
+},{"./checkPropTypes":24,"./lib/ReactPropTypesSecret":28,"_process":1,"object-assign":23}],27:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -2022,7 +2217,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./factoryWithThrowingShims":24,"./factoryWithTypeCheckers":25,"_process":1}],27:[function(require,module,exports){
+},{"./factoryWithThrowingShims":25,"./factoryWithTypeCheckers":26,"_process":1}],28:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -2036,7 +2231,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (process){
 /** @license React v16.4.1
  * react-dom.development.js
@@ -19470,7 +19665,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":1,"fbjs/lib/ExecutionEnvironment":8,"fbjs/lib/camelizeStyleName":10,"fbjs/lib/containsNode":11,"fbjs/lib/emptyFunction":12,"fbjs/lib/emptyObject":13,"fbjs/lib/getActiveElement":14,"fbjs/lib/hyphenateStyleName":16,"fbjs/lib/invariant":17,"fbjs/lib/shallowEqual":20,"fbjs/lib/warning":21,"object-assign":22,"prop-types/checkPropTypes":23,"react":33}],29:[function(require,module,exports){
+},{"_process":1,"fbjs/lib/ExecutionEnvironment":9,"fbjs/lib/camelizeStyleName":11,"fbjs/lib/containsNode":12,"fbjs/lib/emptyFunction":13,"fbjs/lib/emptyObject":14,"fbjs/lib/getActiveElement":15,"fbjs/lib/hyphenateStyleName":17,"fbjs/lib/invariant":18,"fbjs/lib/shallowEqual":21,"fbjs/lib/warning":22,"object-assign":23,"prop-types/checkPropTypes":24,"react":34}],30:[function(require,module,exports){
 /** @license React v16.4.1
  * react-dom.production.min.js
  *
@@ -19712,7 +19907,7 @@ var vi={createPortal:ui,findDOMNode:function(a){return null==a?null:1===a.nodeTy
 arguments)},unstable_batchedUpdates:bi,unstable_deferredUpdates:Hh,unstable_interactiveUpdates:ei,flushSync:di,unstable_flushControlled:fi,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{EventPluginHub:Ka,EventPluginRegistry:va,EventPropagators:$a,ReactControlledComponent:Rb,ReactDOMComponentTree:Qa,ReactDOMEventListener:Nd},unstable_createRoot:function(a,b){return new qi(a,!0,null!=b&&!0===b.hydrate)}};ki({findFiberByHostInstance:Na,bundleType:0,version:"16.4.1",rendererPackageName:"react-dom"});
 var Ai={default:vi},Bi=Ai&&vi||Ai;module.exports=Bi.default?Bi.default:Bi;
 
-},{"fbjs/lib/ExecutionEnvironment":8,"fbjs/lib/containsNode":11,"fbjs/lib/emptyFunction":12,"fbjs/lib/emptyObject":13,"fbjs/lib/getActiveElement":14,"fbjs/lib/invariant":17,"fbjs/lib/shallowEqual":20,"object-assign":22,"react":33}],30:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":9,"fbjs/lib/containsNode":12,"fbjs/lib/emptyFunction":13,"fbjs/lib/emptyObject":14,"fbjs/lib/getActiveElement":15,"fbjs/lib/invariant":18,"fbjs/lib/shallowEqual":21,"object-assign":23,"react":34}],31:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -19754,7 +19949,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":28,"./cjs/react-dom.production.min.js":29,"_process":1}],31:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":29,"./cjs/react-dom.production.min.js":30,"_process":1}],32:[function(require,module,exports){
 (function (process){
 /** @license React v16.4.1
  * react.development.js
@@ -21244,7 +21439,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":1,"fbjs/lib/emptyFunction":12,"fbjs/lib/emptyObject":13,"fbjs/lib/invariant":17,"fbjs/lib/warning":21,"object-assign":22,"prop-types/checkPropTypes":23}],32:[function(require,module,exports){
+},{"_process":1,"fbjs/lib/emptyFunction":13,"fbjs/lib/emptyObject":14,"fbjs/lib/invariant":18,"fbjs/lib/warning":22,"object-assign":23,"prop-types/checkPropTypes":24}],33:[function(require,module,exports){
 /** @license React v16.4.1
  * react.production.min.js
  *
@@ -21268,7 +21463,7 @@ _calculateChangedBits:b,_defaultValue:a,_currentValue:a,_currentValue2:a,_change
 b.key&&(g=""+b.key);var l=void 0;a.type&&a.type.defaultProps&&(l=a.type.defaultProps);for(c in b)K.call(b,c)&&!L.hasOwnProperty(c)&&(d[c]=void 0===b[c]&&void 0!==l?l[c]:b[c])}c=arguments.length-2;if(1===c)d.children=e;else if(1<c){l=Array(c);for(var m=0;m<c;m++)l[m]=arguments[m+2];d.children=l}return{$$typeof:t,type:a.type,key:g,ref:h,props:d,_owner:f}},createFactory:function(a){var b=M.bind(null,a);b.type=a;return b},isValidElement:N,version:"16.4.1",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:J,
 assign:k}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default?Z.default:Z;
 
-},{"fbjs/lib/emptyFunction":12,"fbjs/lib/emptyObject":13,"fbjs/lib/invariant":17,"object-assign":22}],33:[function(require,module,exports){
+},{"fbjs/lib/emptyFunction":13,"fbjs/lib/emptyObject":14,"fbjs/lib/invariant":18,"object-assign":23}],34:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -21279,4 +21474,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":31,"./cjs/react.production.min.js":32,"_process":1}]},{},[6]);
+},{"./cjs/react.development.js":32,"./cjs/react.production.min.js":33,"_process":1}]},{},[7]);

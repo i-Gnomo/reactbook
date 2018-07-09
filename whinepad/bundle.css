@@ -67,6 +67,21 @@ a.Button{
     height: 24px;
     line-height: 24px;
     border: 1px #cccccc solid;
+}input, textarea{
+    width: 160px;
+    height: 26px;
+    line-height: 26px;
+    border: 1px solid #434343;
+    border-radius: 5px;
+    text-indent: 5px;
+    font-family: "microsoft yahei";
+}
+textarea{
+	width: 150px;
+	height: 42px;
+    line-height: 20px;
+    text-indent: 0;
+    padding: 0 5px;
 }.Logo {
   background-image: url('images/react-logo.svg');
   background-size: cover;
