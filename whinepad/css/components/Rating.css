@@ -1,19 +1,21 @@
-.Rating{
+.Rating {
     font-size: 24px;
-    font-family: 'microsoft yahei';
-    color: #434343;
+    font-family: "microsoft yahei";
+    color: gray;
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
 }
-.Rating span{
-	height: 24px;
-	width: 24px;
-	display: inline-block;
-	vertical-align: middle;
-	background-image: url('../../images/star.png');
-	background-size: cover;
+
+.Rating span {
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url("../../images/star.png");
+    background-size: cover;
 }
-.Rating span.RatingOn{
-	background-image: url('../../images/star-on.png');
+
+.Rating span.RatingOn {
+    background-image: url("../../images/star-on.png");
 }
