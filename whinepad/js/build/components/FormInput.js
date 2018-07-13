@@ -66,7 +66,7 @@ var FormInput = function (_Component) {
 					}));
 					break;
 				case 'rating':
-					return _react2.default.createElement(_Rating2.default, _extends({}, common, { max: 10, defaultValue: parseInt(this.props.defaultValue, 10) }));
+					return _react2.default.createElement(_Rating2.default, _extends({}, common, { max: 5, defaultValue: parseInt(this.props.defaultValue, 10) }));
 					break;
 				case 'suggest':
 					return _react2.default.createElement(_Suggest2.default, _extends({}, common, { options: this.props.options }));

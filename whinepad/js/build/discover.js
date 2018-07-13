@@ -32,6 +32,10 @@ var _Form = require('./components/Form');
 
 var _Form2 = _interopRequireDefault(_Form);
 
+var _Actions = require('./components/Actions');
+
+var _Actions2 = _interopRequireDefault(_Actions);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*
@@ -247,10 +251,39 @@ _reactDom2.default.render(_react2.default.createElement(
     ),
     _react2.default.createElement(
         'div',
-        null,
-        'form: ',
+        { className: 'NormalForm' },
+        _react2.default.createElement(
+            'h3',
+            null,
+            'Form: '
+        ),
         _react2.default.createElement(_Form2.default, { fields: [{ label: 'Rating', type: 'rating', id: 'rateme' }, { label: 'Greetings', id: 'freetext' }],
-            initialData: { rateme: 4, freetext: 'hello' }
+            initialData: { rateme: 3, freetext: '' }
         })
+    ),
+    _react2.default.createElement(
+        'div',
+        { className: 'NormalForm' },
+        _react2.default.createElement(
+            'h3',
+            null,
+            'Form readonly: '
+        ),
+        _react2.default.createElement(_Form2.default, { fields: [{ label: 'Rating', type: 'rating', id: 'rateme' }, { label: 'Greetings', id: 'freetext' }],
+            initialData: { rateme: 3, freetext: 'Hello' },
+            readonly: true
+        })
+    ),
+    _react2.default.createElement(
+        'h2',
+        null,
+        'Actions'
+    ),
+    _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_Actions2.default, { onAction: function onAction(type) {
+                return alert(type);
+            } })
     )
 ), document.getElementById("pad"));

@@ -1,4 +1,26 @@
-.Button {
+.Actions {
+    padding: 10px;
+}
+
+.Actions>span {
+    display: inline-block;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin: 0 8px;
+    font-size: 24px;
+    color: black;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.Actions>span:hover {
+    color: green;
+    border: 1px solid green;
+}.Button {
     min-width: 70px;
     height: 30px;
     line-height: 30px;
@@ -76,6 +98,27 @@ table tr td {
     height: 24px;
     line-height: 24px;
     border: 1px gainsboro solid;
+}.NormalForm {
+    display: inline-block;
+    padding: 20px;
+}
+
+.NormalForm h3 {
+    font-size: 18px;
+    font-weight: normal;
+    color: black;
+}
+
+.Form {
+    padding-top: 10px;
+}
+
+.Form .FormRow {
+    margin: 10px 0;
+}
+
+.Form .FormRow .FormLabel {
+    display: block;
 }input,
 textarea {
     width: 160px;

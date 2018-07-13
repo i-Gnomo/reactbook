@@ -1,0 +1,22 @@
+.NormalForm {
+    display: inline-block;
+    padding: 20px;
+}
+
+.NormalForm h3 {
+    font-size: 18px;
+    font-weight: normal;
+    color: black;
+}
+
+.Form {
+    padding-top: 10px;
+}
+
+.Form .FormRow {
+    margin: 10px 0;
+}
+
+.Form .FormRow .FormLabel {
+    display: block;
+}

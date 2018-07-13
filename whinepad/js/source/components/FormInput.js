@@ -25,7 +25,7 @@ class FormInput extends Component{
 					/>);
 			break;
 			case 'rating':
-				return (<Rating {...common} max={10} defaultValue={parseInt(this.props.defaultValue, 10)} />);
+				return (<Rating {...common} max={5} defaultValue={parseInt(this.props.defaultValue, 10)} />);
 			break;
 			case 'suggest':
 				return (<Suggest {...common} options={this.props.options}/>)

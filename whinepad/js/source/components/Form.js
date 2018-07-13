@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
+import Rating from './Rating';
 import FormInput from './FormInput';
 
 class Form extends Component{
@@ -14,7 +15,9 @@ class Form extends Component{
     render() {
         return (
             <form className="Form">{this.props.fields.map(field => {
+                /*表单内元素初始默认值*/
                 const prefilled = this.props.initialData && this.props.initialData[field.id];
+                /*表单可以读写 */
                 if (!this.props.readonly) {
                     return (
                         <div className="FormRow" key={field.id}>
@@ -26,6 +29,7 @@ class Form extends Component{
                 if (!prefilled) {
                     return null;
                 }
+                /*表单只读 */
                 return (
                     <div className="FormRow" key={field.id}>
                     <span className="FormLabel">{field.label}:</span>

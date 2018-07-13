@@ -8,6 +8,7 @@ import Suggest from './components/Suggest';
 import Rating from './components/Rating';
 import FormInput from './components/FormInput';
 import Form from './components/Form';
+import Actions from './components/Actions';
 
 /*
 test-driven development TDD
@@ -70,12 +71,29 @@ ReactDOM.render(
             </tbody> 
         </table>
         <h2>Form</h2>
-        <div>form: <Form fields={[
-            {label:'Rating', type:'rating', id:'rateme'},
-            {label:'Greetings', id:'freetext'}
-        ]} 
-            initialData = {{rateme:4,freetext:'hello'}}
-        /></div>
+        <div className="NormalForm">
+            <h3>Form: </h3>
+            <Form fields={[
+                {label:'Rating', type:'rating', id:'rateme'},
+                {label:'Greetings', id:'freetext'}
+            ]} 
+                initialData = {{rateme:3,freetext:''}}
+            />
+        </div>
+        <div className="NormalForm">
+            <h3>Form readonly: </h3>
+            <Form fields={[
+                {label:'Rating', type:'rating', id:'rateme'},
+                {label:'Greetings', id:'freetext'}
+            ]} 
+                initialData = {{rateme:3,freetext:'Hello'}}
+                readonly = {true}
+            />
+        </div>
+        <h2>Actions</h2>
+        <div>
+            <Actions onAction={type=>alert(type)} />
+        </div>
     </div>,
     document.getElementById("pad")
 );

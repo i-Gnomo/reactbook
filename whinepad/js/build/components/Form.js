@@ -20,6 +20,10 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _Rating = require('./Rating');
+
+var _Rating2 = _interopRequireDefault(_Rating);
+
 var _FormInput = require('./FormInput');
 
 var _FormInput2 = _interopRequireDefault(_FormInput);
@@ -61,7 +65,9 @@ var Form = function (_Component) {
                 'form',
                 { className: 'Form' },
                 this.props.fields.map(function (field) {
+                    /*表单内元素初始默认值*/
                     var prefilled = _this3.props.initialData && _this3.props.initialData[field.id];
+                    /*表单可以读写 */
                     if (!_this3.props.readonly) {
                         return _react2.default.createElement(
                             'div',
@@ -78,6 +84,7 @@ var Form = function (_Component) {
                     if (!prefilled) {
                         return null;
                     }
+                    /*表单只读 */
                     return _react2.default.createElement(
                         'div',
                         { className: 'FormRow', key: field.id },
@@ -87,7 +94,7 @@ var Form = function (_Component) {
                             field.label,
                             ':'
                         ),
-                        field.type === 'rating' ? _react2.default.createElement(Rating, { readonly: true, defaultValue: parseInt(prefilled, 10) }) : _react2.default.createElement(
+                        field.type === 'rating' ? _react2.default.createElement(_Rating2.default, { readonly: true, defaultValue: parseInt(prefilled, 10) }) : _react2.default.createElement(
                             'div',
                             null,
                             prefilled
